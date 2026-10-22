@@ -1,0 +1,274 @@
+<!-- ---
+const stats = [
+  { k: "+50", v: "conjuntos administrados" },
+  { k: "12k+", v: "unidades en plataforma" },
+  { k: "99.9%", v: "disponibilidad" },
+];
+---
+<section class="bg-hero bg-gradient-to-b from-brand to-brand-deep pt-16">
+  <div class="container-x section-pad grid items-center gap-14 lg:grid-cols-2">
+    <div class="rise">
+      <span class="eyebrow-dark">Software de administración de condominios</span>
+      <h1 class="mt-4 text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">
+        Deja de apagar incendios.<br />Empieza a administrar.
+      </h1>
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/75">
+        Vecinal centraliza propiedades, residentes, pagos, mantenimiento, amenidades y
+        control de acceso en un solo panel. Menos hojas de cálculo, menos llamadas
+        perdidas, cero cuotas sin rastrear.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center gap-4">
+        <a href="#demo" class="btn-primary">Solicitar demo gratuita →</a>
+        <a href="#modulos" class="btn-secondary">▶ Ver el panel en acción (2 min)</a>
+      </div>
+      <p class="mt-4 text-sm text-white/60">Sin tarjeta de crédito. Configuración asistida en menos de 48 horas.</p>
+      <dl class="mt-10 flex flex-wrap gap-8 border-t border-white/10 pt-8">
+        {stats.map((s) => (
+          <div>
+            <dt class="tnum font-display text-2xl font-bold text-white">{s.k}</dt>
+            <dd class="text-sm text-white/60">{s.v}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+
+    <div class="rise relative" aria-hidden="true">
+      <div class="absolute -inset-8 rounded-[2rem] bg-accent/20 blur-3xl"></div>
+      <div class="relative overflow-hidden rounded-2xl border border-white/10 bg-white shadow-2xl">
+        <div class="flex items-center gap-1.5 border-b border-ink/5 bg-surface px-4 py-3">
+          <span class="h-2.5 w-2.5 rounded-full bg-warn/70"></span>
+          <span class="h-2.5 w-2.5 rounded-full bg-warn/40"></span>
+          <span class="h-2.5 w-2.5 rounded-full bg-success/60"></span>
+          <span class="ml-3 rounded-md bg-white px-3 py-1 text-xs text-ink-soft">app.vecinal.io/dashboard</span>
+        </div>
+        <div class="grid grid-cols-3 gap-3 p-4">
+          <div class="col-span-1 rounded-xl bg-surface p-3">
+            <div class="mb-3 h-2 w-3/4 rounded bg-ink/10"></div>
+            {["Propiedades", "Residentes", "Pagos", "Mantenimiento"].map((m, i) => (
+              <div class:list={["mb-2 rounded-lg px-2 py-1.5 text-[10px] font-medium", i === 2 ? "bg-accent/10 text-accent" : "text-ink-soft"]}>{m}</div>
+            ))}
+          </div>
+          <div class="col-span-2 space-y-3">
+            <div class="grid grid-cols-3 gap-2">
+              <div class="rounded-lg bg-surface p-2"><div class="text-[9px] text-ink-soft">Cartera al día</div><div class="tnum text-sm font-bold text-success">92%</div></div>
+              <div class="rounded-lg bg-surface p-2"><div class="text-[9px] text-ink-soft">Solicitudes</div><div class="tnum text-sm font-bold text-ink">14</div></div>
+              <div class="rounded-lg bg-surface p-2"><div class="text-[9px] text-ink-soft">Reservas hoy</div><div class="tnum text-sm font-bold text-ink">6</div></div>
+            </div>
+            <div class="rounded-lg border border-ink/5 p-2">
+              <div class="mb-1 flex justify-between text-[10px]"><span class="font-medium text-ink">Mant. · Torre B, piso 4</span><span class="rounded bg-success/10 px-1.5 py-0.5 font-semibold text-success">Resuelto</span></div>
+              <div class="h-1.5 w-full rounded-full bg-surface"><div class="h-1.5 w-full rounded-full bg-success"></div></div>
+            </div>
+            <div class="rounded-lg border border-ink/5 p-2">
+              <div class="mb-1 flex justify-between text-[10px]"><span class="font-medium text-ink">Recordatorio enviado</span><span class="tnum text-ink-soft">12 residentes</span></div>
+              <div class="flex gap-1">{[1,2,3,4,5,6,7,8,9,10,11,12].map(() => <span class="h-4 w-4 rounded-full bg-accent/15"></span>)}</div>
+            </div>
+            <div class="rounded-lg border border-warn/20 bg-warn/5 p-2 text-[10px] font-medium text-warn">⚠ 3 solicitudes pendientes de aprobación</div>
+          </div>
+        </div>
+      </div>
+      <div class="absolute -bottom-4 -left-4 rounded-xl bg-white px-4 py-3 text-xs font-semibold text-ink shadow-xl">🔒 Acceso seguro</div>
+      <div class="absolute -right-3 top-8 rounded-xl bg-white px-4 py-3 text-xs font-semibold text-ink shadow-xl">📊 Analítica en tiempo real</div>
+    </div>
+  </div>
+</section> -->
+
+
+---
+/**
+ * Hero — Portada · v2 UI (compacto)
+ * ------------------------------------------------------------
+ * · Fondo: degradado muy sutil brand → brand-deep.
+ *   (En Tailwind v4 el degradado es `bg-linear-to-b`; la clase
+ *   anterior `bg-gradient-to-b` y `bg-hero` ya no aplican.)
+ * · CTA principal: `btn-primary-dark` (se ve sobre fondo oscuro).
+ * · El mockup del dashboard es HTML/CSS puro, decorativo
+ *   (aria-hidden) y no lleva imágenes.
+ * · Altura pensada para caber en ~1 pantalla en escritorio.
+ */
+
+// Iconos SVG (viewBox 24x24, estilo Lucide)
+const icons = {
+  arrowRight: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+  play: '<polygon points="7 4 20 12 7 20 7 4"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  building:
+    '<path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/>',
+  users:
+    '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  wallet:
+    '<path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>',
+  wrench:
+    '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+  alert:
+    '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+  shield:
+    '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+  chart: '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>',
+};
+
+const stats = [
+  { k: "+50", v: "conjuntos administrados" },
+  { k: "12.000+", v: "unidades en plataforma" },
+  { k: "99,9 %", v: "disponibilidad" },
+];
+
+const reassurance = [
+  { icon: icons.check, text: "Sin tarjeta de crédito" },
+  { icon: icons.clock, text: "Configuración asistida en menos de 48 horas" },
+];
+
+// Menú lateral del mockup
+const sidebar = [
+  { label: "Propiedades", icon: icons.building },
+  { label: "Residentes", icon: icons.users },
+  { label: "Pagos", icon: icons.wallet, active: true },
+  { label: "Mantenimiento", icon: icons.wrench },
+];
+
+// KPIs del mockup
+const kpis = [
+  { label: "Cartera al día", value: "92 %", tone: "text-success" },
+  { label: "Solicitudes", value: "14", tone: "text-brand" },
+  { label: "Reservas hoy", value: "6", tone: "text-brand" },
+];
+---
+
+<section class="bg-linear-to-b from-brand to-brand-deep pt-16" aria-labelledby="hero-title">
+  <div class="container-x grid items-center gap-12 section-pad p-0 lg:grid-cols-[1.05fr_1fr] lg:gap-14 ">
+    <!-- Columna de texto -->
+    <div class="rise">
+      <span class="eyebrow-dark">Software para administrar conjuntos residenciales</span>
+
+      <h1 id="hero-title" class="mt-4 text-4xl font-extrabold leading-[1.08] text-white sm:text-5xl lg:text-[3.5rem]">
+        Deja de apagar incendios.<br />
+        <span class="text-accent-bright">Empieza a administrar.</span>
+      </h1>
+
+      <p class="mt-5 max-w-xl text-lg leading-relaxed text-white/75">
+        Vecinal centraliza propiedades, residentes, pagos, mantenimiento, amenidades y control de acceso en un solo
+        panel. Menos hojas de cálculo, menos llamadas perdidas, cero cuotas sin rastrear.
+      </p>
+
+      <div class="mt-7 flex flex-wrap items-center gap-3">
+        <a href="#demo" class="btn-primary-dark group">
+          Solicitar demo gratuita
+          <svg viewBox="0 0 24 24" class="size-5 motion-safe:transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons.arrowRight} />
+        </a>
+        <a href="#modulos" class="btn-secondary">
+          <span class="grid size-6 place-items-center rounded-full bg-white/15" aria-hidden="true">
+            <svg viewBox="0 0 24 24" class="size-3" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" set:html={icons.play} />
+          </span>
+          Ver el panel en acción (2 min)
+        </a>
+      </div>
+
+      <ul role="list" class="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/70">
+        {
+          reassurance.map((r) => (
+            <li class="flex items-center gap-2">
+              <svg viewBox="0 0 24 24" class="size-4 shrink-0 text-accent-bright" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={r.icon} />
+              {r.text}
+            </li>
+          ))
+        }
+      </ul>
+
+      <dl class="mt-8 grid max-w-xl grid-cols-3 gap-6 border-t border-white/10 pt-6">
+        {
+          stats.map((s) => (
+            <div class="flex flex-col-reverse gap-0.5">
+              <dt class="text-xs text-white/60 sm:text-sm">{s.v}</dt>
+              <dd class="tnum font-display text-2xl font-bold text-white">{s.k}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    <!-- Mockup del dashboard (HTML/CSS puro, decorativo) -->
+    <div class="rise relative mx-auto w-full max-w-xl lg:max-w-none hidden md:block" aria-hidden="true">
+      <div class="absolute -inset-6 rounded-[2rem] bg-accent-bright/15 blur-3xl"></div>
+
+      <div class="relative overflow-hidden rounded-card border border-white/10 bg-white shadow-pop">
+        <!-- Barra del navegador -->
+        <div class="flex items-center gap-1.5 border-b border-line bg-surface px-4 py-3">
+          <span class="size-2.5 rounded-full bg-line"></span>
+          <span class="size-2.5 rounded-full bg-line"></span>
+          <span class="size-2.5 rounded-full bg-line"></span>
+          <span class="ml-3 rounded-md bg-white px-3 py-1 text-xs text-ink-soft">app.vecinal.io/dashboard</span>
+        </div>
+
+        <div class="grid grid-cols-[8.5rem_1fr] gap-3 p-4">
+          <!-- Sidebar -->
+          <div class="rounded-control bg-surface p-2.5">
+            <div class="mb-3 flex items-center gap-2 px-1">
+              <span class="size-5 rounded-md bg-brand"></span>
+              <span class="h-2 w-12 rounded bg-brand/15"></span>
+            </div>
+            {
+              sidebar.map((m) => (
+                <div
+                  class:list={[
+                    "mb-1 flex items-center gap-2 rounded-lg px-2 py-2 text-[11px] font-semibold",
+                    m.active ? "bg-accent/10 text-accent" : "text-ink-soft",
+                  ]}
+                >
+                  <svg viewBox="0 0 24 24" class="size-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={m.icon} />
+                  {m.label}
+                </div>
+              ))
+            }
+          </div>
+
+          <!-- Contenido -->
+          <div class="space-y-2.5">
+            <div class="grid grid-cols-3 gap-2">
+              {
+                kpis.map((k) => (
+                  <div class="rounded-lg bg-surface p-2.5">
+                    <div class="text-[10px] text-ink-soft">{k.label}</div>
+                    <div class:list={["tnum font-display text-lg font-bold", k.tone]}>{k.value}</div>
+                  </div>
+                ))
+              }
+            </div>
+
+            <div class="rounded-lg border border-line p-2.5">
+              <div class="mb-2 flex items-center justify-between gap-2 text-[11px]">
+                <span class="font-semibold text-brand">Mant. · Torre B, piso 4</span>
+                <span class="rounded-full bg-success/10 px-2 py-0.5 font-bold text-success">Resuelto</span>
+              </div>
+              <div class="h-1.5 w-full rounded-full bg-surface"><div class="h-1.5 w-full rounded-full bg-success"></div></div>
+            </div>
+
+            <div class="rounded-lg border border-line p-2.5">
+              <div class="mb-2 flex items-center justify-between gap-2 text-[11px]">
+                <span class="font-semibold text-brand">Recordatorio enviado</span>
+                <span class="tnum text-ink-soft">12 residentes</span>
+              </div>
+              <div class="flex gap-1">
+                {Array.from({ length: 12 }).map(() => <span class="size-3.5 rounded-full bg-accent/25"></span>)}
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 rounded-lg bg-warn/10 p-2.5 text-[11px] font-semibold text-ink">
+              <svg viewBox="0 0 24 24" class="size-4 shrink-0 text-warn" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={icons.alert} />
+              3 solicitudes pendientes de aprobación
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tarjetas flotantes -->
+      <div class="absolute -bottom-4 -left-2 flex items-center gap-2 rounded-control bg-white px-4 py-2.5 text-xs font-semibold text-brand shadow-pop sm:-left-4">
+        <svg viewBox="0 0 24 24" class="size-4 text-accent" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={icons.shield} />
+        Acceso seguro
+      </div>
+      <div class="absolute -right-2 top-10 flex items-center gap-2 rounded-control bg-white px-4 py-2.5 text-xs font-semibold text-brand shadow-pop sm:-right-3">
+        <svg viewBox="0 0 24 24" class="size-4 text-accent" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={icons.chart} />
+        Analítica en tiempo real
+      </div>
+    </div>
+  </div>
+</section>

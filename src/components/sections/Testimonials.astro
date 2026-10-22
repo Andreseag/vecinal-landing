@@ -1,0 +1,198 @@
+<!-- ---
+const items = [
+  {
+    quote: "Llevaba 8 años con mis libretas y 14 archivos de Excel. Con Vecinal migré 4 conjuntos en una semana. Lo que más me sorprendió no fue el tiempo que ahorro, sino la confianza que gané con los consejos: ahora muestro el panel en las asambleas y todo queda claro.",
+    name: "Mariana G.",
+    role: "Administradora de 4 conjuntos · 620 unidades",
+  },
+  {
+    quote: "Antes pedíamos a los residentes confirmar visitas por WhatsApp y se perdía todo. Hoy el control de acceso está en la tablet de portería. Un residente me dijo: «por fin siento que alguien controla quién entra».",
+    name: "Carlos R.",
+    role: "Coordinador de Portería",
+  },
+  {
+    quote: "El primer mes vimos bajar la cartera morosa y eso cambió la conversación de la asamblea: de reclamos a resultados. Lo pagamos con lo que recuperamos en cuotas.",
+    name: "Andrés P.",
+    role: "Presidente de consejo · Conjunto Residencial Los Pinos",
+  },
+];
+const badges = ["+50 conjuntos administrados", "12.000+ unidades en plataforma", "99.9% disponibilidad", "Soporte en español < 4 h"];
+---
+<section class="section-pad bg-surface">
+  <div class="container-x rise">
+    <p class="eyebrow">Testimonios</p>
+    <h2 class="max-w-3xl text-3xl font-bold text-ink sm:text-4xl">
+      Las administradoras que ya no viven <span class="text-accent">apagando incendios</span>
+    </h2>
+
+    <div class="mt-12 grid gap-6 lg:grid-cols-3">
+      {items.map((t) => (
+        <figure class="flex flex-col rounded-2xl border border-ink/5 bg-white p-6 shadow-sm">
+          <blockquote class="flex-1 text-sm leading-relaxed text-ink/80">“{t.quote}”</blockquote>
+          <figcaption class="mt-5 border-t border-ink/5 pt-4">
+            <p class="font-semibold text-ink">{t.name}</p>
+            <p class="text-xs text-ink-soft">{t.role}</p>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <ul class="mt-10 flex flex-wrap gap-3">
+      {badges.map((b) => (
+        <li class="rounded-full border border-ink/10 bg-white px-4 py-2 text-xs font-semibold text-ink-soft">✔ {b}</li>
+      ))}
+    </ul>
+  </div>
+</section> -->
+
+---
+/**
+ * Testimonials — Testimonios + métricas · v3 (compacto)
+ * ------------------------------------------------------------
+ * · `featured: true` → tarjeta grande (petróleo); las demás, compactas.
+ * · `result` (chip) solo se muestra en la tarjeta destacada.
+ * · Iniciales del avatar calculadas desde `name`.
+ * · `stats` alimenta la franja de métricas.
+ * Altura total reducida: menos padding de sección y de tarjetas,
+ *   texto más compacto y chip solo en la destacada.
+ */
+
+const icons = {
+  quote:
+    '<path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+};
+
+const items = [
+  {
+    featured: true,
+    quote:
+      "Llevaba 8 años con mis libretas y 14 archivos de Excel. Con Vecinal migré 4 conjuntos en una semana. Lo que más me sorprendió no fue el tiempo que ahorro, sino la confianza que gané con los consejos: ahora muestro el panel en las asambleas y todo queda claro.",
+    name: "Mariana G.",
+    role: "Administradora de 4 conjuntos · 620 unidades",
+    result: "4 conjuntos migrados en 1 semana",
+  },
+  {
+    quote:
+      "Antes pedíamos a los residentes confirmar visitas por WhatsApp y se perdía todo. Hoy el control de acceso está en la tablet de portería. Un residente me dijo: «por fin siento que alguien controla quién entra».",
+    name: "Carlos R.",
+    role: "Coordinador de Portería",
+  },
+  {
+    quote:
+      "El primer mes vimos bajar la cartera morosa y eso cambió la conversación de la asamblea: de reclamos a resultados. Lo pagamos con lo que recuperamos en cuotas.",
+    name: "Andrés P.",
+    role: "Presidente de consejo · Conjunto Residencial Los Pinos",
+  },
+];
+
+const stats = [
+  { value: "+50", label: "conjuntos administrados" },
+  { value: "12.000+", label: "unidades en plataforma" },
+  { value: "99,9 %", label: "disponibilidad" },
+  { value: "< 4 h", label: "soporte en español" },
+];
+
+// "Mariana G." → "MG"
+const initials = (name: string) =>
+  name
+    .replace(/\./g, "")
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0].toUpperCase())
+    .join("");
+---
+
+<section id="testimonios" class="bg-surface px-6 py-14 sm:px-10 lg:px-16 lg:py-20" aria-labelledby="testimonios-title">
+  <div class="container-x rise">
+    <p class="eyebrow">Testimonios</p>
+    <h2 id="testimonios-title" class="max-w-3xl text-3xl font-bold text-brand sm:text-4xl">
+      Las administradoras que ya no viven <span class="text-accent">apagando incendios</span>
+    </h2>
+
+    <!-- Testimonios -->
+    <div class="mt-8 grid gap-4 lg:grid-cols-5 lg:gap-5">
+      {
+        items.map((t) => (
+          <figure
+            class:list={[
+              "flex flex-col rounded-card",
+              t.featured
+                ? "bg-brand p-6 text-white shadow-pop sm:p-8 lg:col-span-3 lg:row-span-2"
+                : "border border-line bg-white p-5 shadow-card lg:col-span-2",
+            ]}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              class:list={["shrink-0", t.featured ? "size-7 text-accent-bright" : "size-5 text-accent/40"]}
+              fill="currentColor"
+              stroke="none"
+              aria-hidden="true"
+              set:html={icons.quote}
+            />
+
+            <blockquote
+              class:list={[
+                "mt-3 flex-1 leading-relaxed",
+                t.featured ? "font-display text-lg font-semibold text-white sm:text-xl" : "text-sm text-ink",
+              ]}
+            >
+              {t.quote}
+            </blockquote>
+
+            {t.featured && t.result && (
+              <p class="mt-4 inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold text-mint">
+                <svg
+                  viewBox="0 0 24 24"
+                  class="size-3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  set:html={icons.check}
+                />
+                {t.result}
+              </p>
+            )}
+
+            <figcaption
+              class:list={[
+                "flex items-center gap-3 border-t",
+                t.featured ? "mt-5 border-white/15 pt-5" : "mt-4 border-line pt-4",
+              ]}
+            >
+              <span
+                class:list={[
+                  "grid shrink-0 place-items-center rounded-full font-display font-bold",
+                  t.featured ? "size-10 bg-accent-bright text-sm text-brand" : "size-9 bg-mint text-xs text-brand",
+                ]}
+                aria-hidden="true"
+              >
+                {initials(t.name)}
+              </span>
+              <div class="min-w-0">
+                <p class:list={["text-sm font-semibold", t.featured ? "text-white" : "text-brand"]}>{t.name}</p>
+                <p class:list={["text-xs", t.featured ? "text-white/70" : "text-ink-soft"]}>{t.role}</p>
+              </div>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+
+    <!-- Métricas -->
+    <dl class="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-card border border-line bg-line lg:grid-cols-4">
+      {
+        stats.map((s) => (
+          <div class="flex flex-col-reverse gap-0.5 bg-white px-4 py-4 text-center">
+            <dt class="text-xs text-ink-soft sm:text-sm">{s.label}</dt>
+            <dd class="tnum font-display text-2xl font-extrabold tracking-tight text-brand sm:text-3xl">{s.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>

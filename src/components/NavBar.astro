@@ -1,0 +1,232 @@
+---
+/**
+ * Navbar — Cabecera + menú móvil · v2
+ * ------------------------------------------------------------
+ * Escritorio (lg+): links horizontales con indicador de sección
+ *   activa (scroll-spy) y CTA.
+ * Móvil: botón hamburguesa animado → panel a pantalla completa con
+ *   links grandes numerados, entrada escalonada y CTA al fondo.
+ *
+ * Comportamiento del menú móvil:
+ *   · Bloquea el scroll del fondo mientras está abierto.
+ *   · Se cierra con Escape, al tocar un link o al pasar a escritorio.
+ *   · Devuelve el foco al botón al cerrar; `inert` mientras está cerrado.
+ *   · aria-expanded / aria-controls / aria-label dinámico.
+ *
+ * Requiere en global.css: html { scroll-padding-top: 5rem; }
+ * (para que las anclas no queden tapadas por la cabecera fija).
+ */
+
+const links = [
+  { href: "#valor", label: "Por qué Vecinal" },
+  { href: "#modulos", label: "Módulos" },
+  { href: "#roi", label: "ROI" },
+  { href: "#precios", label: "Precios" },
+  { href: "#faq", label: "FAQ" },
+];
+
+const icons = {
+  arrowRight: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+};
+---
+
+<header id="site-header" data-open="false" class="group/nav fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-brand/90 backdrop-blur-md transition-colors duration-200 data-[open=true]:bg-brand">
+  <nav class="container-x flex h-16 items-center justify-between px-6 sm:px-10 lg:px-16" aria-label="Principal">
+    <!-- Logo: marca + wordmark (colores del sistema, versión sobre oscuro) -->
+    <a href="#" class="flex items-center gap-2.5 rounded-control focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-bright" aria-label="Vecinal, ir al inicio">
+      <svg viewBox="0 0 62 56" class="h-8 w-auto" aria-hidden="true">
+        <polygon points="4,24 20,8 36,24 36,52 4,52" class="fill-white" />
+        <polygon points="26,24 42,8 58,24 58,52 26,52" class="fill-accent-bright" />
+        <polygon points="26,24 31,19 36,24 36,52 26,52" class="fill-brand" />
+      </svg>
+      <span class="font-display text-2xl font-bold leading-none tracking-[-0.045em] text-white">vecinal</span>
+    </a>
+
+    <!-- Links de escritorio -->
+    <ul class="hidden items-center gap-8 text-sm font-medium text-white/80 lg:flex">
+      {
+        links.map((l) => (
+          <li>
+            <a
+              data-nav-link
+              href={l.href}
+              class="relative py-2 transition-colors hover:text-white aria-[current=true]:text-white after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-accent-bright after:transition-transform after:duration-200 aria-[current=true]:after:scale-x-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-bright"
+            >
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="flex items-center gap-2">
+      <a
+        href="#demo"
+        class="hidden rounded-control bg-accent-bright px-4 py-2.5 text-sm font-semibold text-brand transition-colors hover:bg-mint focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-bright sm:inline-flex"
+      >
+        Solicitar demo
+      </a>
+
+      <!-- Hamburguesa (móvil / tablet) -->
+      <button
+        id="menu-toggle"
+        type="button"
+        class="relative grid size-11 place-items-center rounded-control text-white transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-bright lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Abrir menú"
+      >
+        <span class="relative block h-4 w-6" aria-hidden="true">
+          <span class="absolute inset-x-0 top-0 h-0.5 rounded-full bg-current transition-all duration-300 motion-reduce:transition-none group-data-[open=true]/nav:top-[7px] group-data-[open=true]/nav:rotate-45"></span>
+          <span class="absolute inset-x-0 top-[7px] h-0.5 rounded-full bg-current transition-all duration-200 motion-reduce:transition-none group-data-[open=true]/nav:scale-x-0 group-data-[open=true]/nav:opacity-0"></span>
+          <span class="absolute inset-x-0 top-[14px] h-0.5 rounded-full bg-current transition-all duration-300 motion-reduce:transition-none group-data-[open=true]/nav:top-[7px] group-data-[open=true]/nav:-rotate-45"></span>
+        </span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- Panel móvil: va FUERA del header (backdrop-filter rompería su posición fija) -->
+<div
+  id="mobile-menu"
+  data-open="false"
+  inert
+  class="invisible fixed inset-0 z-40 flex flex-col bg-brand pt-16 opacity-0 transition-[opacity,visibility] duration-200 motion-reduce:transition-none data-[open=true]:visible data-[open=true]:opacity-100 lg:hidden"
+>
+  <div class="flex flex-1 flex-col overflow-y-auto px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-4 sm:px-10">
+    <nav aria-label="Principal (móvil)">
+      <ul role="list">
+        {
+          links.map((l, i) => (
+            <li class="m-item border-b border-white/10" style={`--i:${i}`}>
+              <a
+                data-nav-link
+                data-mobile-link
+                href={l.href}
+                class="group/link flex min-h-16 items-center justify-between gap-4 rounded-control py-4 font-display text-2xl font-semibold text-white transition-colors hover:text-accent-bright aria-[current=true]:text-accent-bright focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent-bright"
+              >
+                <span class="flex items-baseline gap-4">
+                  <span class="tnum w-6 text-sm font-medium text-white/40 group-aria-[current=true]/link:text-accent-bright">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  {l.label}
+                </span>
+                <svg viewBox="0 0 24 24" class="size-5 shrink-0 text-white/40 transition-transform group-hover/link:translate-x-1 group-hover/link:text-accent-bright" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons.arrowRight} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="m-item mt-auto pt-10" style={`--i:${links.length}`}>
+      <a href="#demo" data-mobile-link class="btn-primary-dark w-full py-4 text-lg">
+        Solicitar demo
+        <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons.arrowRight} />
+      </a>
+      <p class="mt-4 flex items-center justify-center gap-2 text-sm text-white/60">
+        <svg viewBox="0 0 24 24" class="size-4 text-accent-bright" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons.check} />
+        Prueba de 14 días sin tarjeta
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Entrada escalonada de los items del menú móvil */
+  .m-item {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+  }
+  #mobile-menu[data-open="true"] .m-item {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(var(--i) * 45ms + 80ms);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .m-item {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const header = document.getElementById("site-header");
+  const panel = document.getElementById("mobile-menu");
+  const toggle = document.getElementById("menu-toggle") as HTMLButtonElement | null;
+  const desktop = window.matchMedia("(min-width: 1024px)");
+
+  function setOpen(open: boolean, returnFocus = true) {
+    if (!header || !panel || !toggle) return;
+    header.dataset.open = String(open);
+    panel.dataset.open = String(open);
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+    document.documentElement.classList.toggle("overflow-hidden", open);
+
+    if (open) {
+      panel.removeAttribute("inert");
+      panel.querySelector<HTMLElement>("a")?.focus({ preventScroll: true });
+    } else {
+      panel.setAttribute("inert", "");
+      if (returnFocus) toggle.focus({ preventScroll: true });
+    }
+  }
+
+  toggle?.addEventListener("click", () => setOpen(panel?.dataset.open !== "true"));
+
+  // Cerrar al tocar un link (primero se libera el scroll para que la ancla funcione)
+  panel?.querySelectorAll("[data-mobile-link]").forEach((a) =>
+    a.addEventListener("click", () => setOpen(false, false))
+  );
+
+  // Escape
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && panel?.dataset.open === "true") setOpen(false);
+  });
+
+  // Al pasar a escritorio, cerrar y restaurar
+  desktop.addEventListener("change", (e) => {
+    if (e.matches && panel?.dataset.open === "true") setOpen(false, false);
+  });
+
+  // Scroll-spy: marca el link de la sección visible
+  const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]"));
+  const ids = Array.from(new Set(navLinks.map((a) => a.getAttribute("href")?.slice(1)).filter(Boolean))) as string[];
+
+  function setActive(id: string | null) {
+    navLinks.forEach((a) => {
+      const active = id !== null && a.getAttribute("href") === `#${id}`;
+      if (active) a.setAttribute("aria-current", "true");
+      else a.removeAttribute("aria-current");
+    });
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) setActive(e.target.id);
+      });
+    },
+    { rootMargin: "-40% 0px -55% 0px" }
+  );
+  ids.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+
+  // Arriba del todo (hero): sin sección activa
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (window.scrollY < 120) setActive(null);
+    },
+    { passive: true }
+  );
+</script>

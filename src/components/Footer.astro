@@ -1,0 +1,54 @@
+---
+import Icon from "./Icon.astro";
+
+const columns = [
+  { title: "Producto", links: ["Módulos", "Precios", "Demo"] },
+  { title: "Compañía", links: ["Nosotros", "Blog", "Contacto"] },
+  { title: "Legal", links: ["Términos", "Privacidad", "Seguridad"] },
+];
+
+const socials = [
+  { name: "linkedin", label: "LinkedIn", href: "#" },
+  { name: "x-social", label: "X (Twitter)", href: "#" },
+  { name: "youtube", label: "YouTube", href: "#" },
+  { name: "instagram", label: "Instagram", href: "#" },
+] as const;
+---
+<footer class="border-t border-ink/5 bg-white px-6 pb-10 pt-14 text-ink-soft sm:px-10 lg:px-16">
+  <div class="container-x">
+    <div class="grid gap-10 md:grid-cols-[2fr_1fr_1fr_1fr]">
+      <div>
+        <a href="#" class="flex items-center gap-2" aria-label="Vecinal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="120" height="74" viewBox="255.796875 575 309.734375 74"><g id="div1"><g id="svg1" role="img" mask="url(#mask-for-svg11)"><mask id="mask-for-svg11"><rect width="78" height="70" x="255.796875" y="577" fill="#ffffff"/></mask><g transform="matrix(1.25 0 0 1.25 256.047 577)"><polygon points="4,24 20,8 36,24 36,52 4,52" fill="rgb(26, 31, 43)" color="rgb(0, 0, 0)" stroke="none"/><polygon points="26,24 42,8 58,24 58,52 26,52" fill="rgb(60, 201, 168)" color="rgb(0, 0, 0)" stroke="none"/><polygon points="26,24 31,19 36,24 36,52 26,52" fill="rgb(255, 255, 255)" color="rgb(0, 0, 0)" stroke="none"/></g></g><g id="div2"><text color="rgb(26, 31, 43)" dominant-baseline="text-after-edge" font-family="Manrope, &quot;Helvetica Neue&quot;, Arial, sans-serif" font-size="68px" font-size-adjust="none" font-stretch="100%" font-style="normal" font-variant="normal" font-weight="700" direction="ltr" letter-spacing="-3.06px" text-decoration="none" text-anchor="start" text-rendering="auto" unicode-bidi="isolate" word-spacing="0px" writing-mode="horizontal-tb" user-select="text" fill="rgb(26, 31, 43)"><tspan xml:space="preserve" x="351.796875" y="655" textLength="213.734375" lengthAdjust="spacingAndGlyphs">vecinal</tspan></text></g></g></svg>
+        </a>
+        <p class="mt-3 max-w-xs text-sm">Tu condominio, bajo control.</p>
+        <div class="mt-4 flex gap-3">
+          {socials.map((s) => (
+            <a
+              href={s.href}
+              aria-label={s.label}
+              class="flex h-9 w-9 items-center justify-center rounded-lg border border-ink/10 text-ink-soft transition hover:border-accent hover:text-accent"
+            >
+              <Icon name={s.name} class="h-4 w-4" />
+            </a>
+          ))}
+        </div>
+      </div>
+      {columns.map((c) => (
+        <div>
+          <h3 class="text-sm font-semibold text-ink">{c.title}</h3>
+          <ul class="mt-3 space-y-2 text-sm">
+            {c.links.map((l) => <li><a class="transition hover:text-accent" href="#">{l}</a></li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+    <div class="mt-12 flex flex-col items-start justify-between gap-3 border-t border-ink/5 pt-6 text-xs sm:flex-row sm:items-center">
+      <p>© 2026 Vecinal · Hecho para quienes administran comunidades.</p>
+      <p class="flex items-center gap-1.5">
+        <span class="h-2 w-2 rounded-full bg-success"></span>
+        Todos los sistemas operativos
+      </p>
+    </div>
+  </div>
+</footer>

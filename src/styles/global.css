@@ -1,0 +1,192 @@
+/* ============================================================
+VECINAL — Sistema de diseño v2 (Tailwind v4, CSS-first)
+------------------------------------------------------------
+Origen: el logo. Dos casas que comparten un muro; la zona
+compartida forma una tercera casa (la comunidad).
+  · Verde petróleo  → #0B2E2F  (casa izquierda, wordmark)
+  · Verde menta     → #1FA58A  (casa derecha)
+  · Menta claro     → #A6E8D4  (muro compartido)
+  · Menta brillante → #3CC9A8  (versión sobre fondo oscuro)
+
+⚙️ PARA CAMBIAR LOS COLORES DE TODA LA LANDING:
+Edita ÚNICAMENTE los valores de las variables en @theme.
+Toda la UI consume estos tokens (bg-brand, text-accent,
+bg-surface, etc.), así que un cambio aquí se propaga al 100%.
+
+REGLAS DE USO (rápidas)
+  1. Fondos oscuros       → bg-brand / bg-brand-deep + texto blanco.
+  2. Acción principal     → bg-accent (texto blanco, AA ≈ 5.2:1).
+  3. Acento sobre oscuro  → text-accent-bright / bg-accent-bright
+                            (con texto text-brand, ≈ 7:1).
+  4. Verde "teal" #1FA58A → solo decorativo (ilustración, iconos
+                            grandes, la marca). NO para texto
+                            pequeño sobre blanco (≈ 3.1:1).
+  5. Un solo CTA primario por sección.
+============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Public+Sans:wght@400;500;600&display=swap");
+@import "tailwindcss";
+
+@theme {
+  /* --- Paleta de marca (del logo) --- */
+  --color-brand: #0b2e2f; /* Verde petróleo · confianza, fondos hero y texto de marca */
+  --color-brand-deep: #071e1f; /* Petróleo profundo · fondos de cierre / footer */
+  --color-teal: #1fa58a; /* Menta del logo · decorativo (no texto pequeño) */
+  --color-mint: #a6e8d4; /* Menta claro · muro compartido, acentos suaves */
+
+  /* --- Acción --- */
+  --color-accent: #0f7a66; /* Verde acción · botones y links sobre claro (AA con blanco) */
+  --color-accent-strong: #0b5f4f; /* Hover / pressed */
+  --color-accent-bright: #3cc9a8; /* Acento sobre fondos oscuros */
+
+  /* --- Neutros --- */
+  --color-surface: #f2f4f1; /* Gris humo cálido · fondos de tarjetas y secciones alternas */
+  --color-line: #dce3e0; /* Bordes y divisores */
+  --color-ink: #16211f; /* Carbón verdoso · texto de cuerpo */
+  --color-ink-soft: #566664; /* Gris secundario · metadatos (AA sobre blanco y surface) */
+
+  /* --- Estados --- */
+  --color-success: #15803d; /* Verde bosque · confirmaciones (acompañar siempre con icono/texto) */
+  --color-warn: #f59e0b; /* Ámbar · recordatorios / pendientes */
+  --color-danger: #d92d20; /* Rojo · errores */
+
+  /* --- Tipografía --- */
+  --font-sans: "Public Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  /* --- Forma (radios) --- */
+  --radius-control: 0.75rem; /* botones, inputs */
+  --radius-card: 1.25rem; /* tarjetas, paneles */
+
+  /* --- Elevación --- */
+  --shadow-card:
+    0 1px 2px rgb(11 46 47 / 0.05), 0 8px 24px rgb(11 46 47 / 0.06);
+  --shadow-pop: 0 12px 40px rgb(11 46 47 / 0.14);
+
+  /* --- Tokens semánticos (alias) ---
+     Úsalos si prefieres nombrar por intención. Cambian de color
+     aquí sin renombrar nada en la UI. */
+  --color-bg-hero: var(--color-brand);
+  --color-bg-close: var(--color-brand-deep);
+  --color-text-primary: var(--color-ink);
+  --color-text-inverse: #ffffff;
+}
+
+/* ---------- Base ---------- */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* compensa la cabecera fija (h-16) en los anclajes */
+}
+
+body {
+  @apply bg-white text-ink font-sans antialiased;
+}
+
+/* Títulos: Manrope con tracking cerrado, igual que el wordmark */
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+::selection {
+  background: var(--color-mint);
+  color: var(--color-brand);
+}
+
+/* Números tabulares para cifras financieras (módulo de pagos/pricing) */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Componentes utilitarios de marca ---------- */
+
+/* Botón principal (fondos claros) */
+@utility btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-control bg-accent px-6 py-3.5
+         text-base font-semibold text-white shadow-lg shadow-accent/25
+         transition hover:bg-accent-strong hover:shadow-xl hover:shadow-accent/30
+         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+}
+
+/* Botón principal sobre fondos oscuros (hero, cierre) */
+@utility btn-primary-dark {
+  @apply inline-flex items-center justify-center gap-2 rounded-control bg-accent-bright px-6 py-3.5
+         text-base font-semibold text-brand
+         transition hover:bg-mint
+         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-bright;
+}
+
+/* Botón secundario sobre fondos oscuros */
+@utility btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 rounded-control border border-white/25
+         bg-white/5 px-6 py-3.5 text-base font-semibold text-white backdrop-blur
+         transition hover:border-white/50 hover:bg-white/10
+         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white;
+}
+
+/* Botón secundario sobre fondos claros */
+@utility btn-outline {
+  @apply inline-flex items-center justify-center gap-2 rounded-control border border-line
+         bg-white px-6 py-3.5 text-base font-semibold text-brand
+         transition hover:border-accent hover:text-accent
+         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+}
+
+/* Tarjeta estándar */
+@utility card {
+  @apply rounded-card border border-line bg-white p-6 shadow-card;
+}
+
+/* Tarjeta sobre sección con fondo surface (sin borde, más limpia) */
+@utility card-soft {
+  @apply rounded-card bg-surface p-6;
+}
+
+/* Link de texto */
+@utility link-brand {
+  @apply font-semibold text-accent underline decoration-accent/30 underline-offset-4
+         transition hover:decoration-accent;
+}
+
+@utility section-pad {
+  @apply px-6 py-20 sm:px-10 lg:px-16 lg:py-28;
+}
+
+@utility container-x {
+  @apply mx-auto w-full max-w-7xl;
+}
+
+@utility eyebrow {
+  @apply mb-4 inline-block rounded-full bg-accent/10 px-4 py-1.5 text-sm font-semibold text-accent;
+}
+
+@utility eyebrow-dark {
+  @apply mb-4 inline-block rounded-full bg-white/10 px-4 py-1.5 text-sm font-semibold text-mint;
+}
+
+/* Animación sutil de entrada al hacer scroll */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.rise {
+  animation: rise 0.6s ease-out both;
+  animation-timeline: view();
+  animation-range: entry 0% cover 30%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise {
+    animation: none;
+  }
+}
