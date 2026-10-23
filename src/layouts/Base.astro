@@ -1,4 +1,8 @@
 ---
+import Footer from '../components/Footer.astro';
+import Navbar from '../components/NavBar.astro';
+import Whatsappbutton from '../components/Whatsappbutton.astro';
+
 interface Props {
   title: string;
   description?: string;
@@ -21,6 +25,9 @@ const { title, description = "Vecinal — La plataforma que ordena la propiedad 
     />
   </head>
   <body>
+    <Navbar />
     <slot />
+    <Footer />
+    <Whatsappbutton />
   </body>
 </html>

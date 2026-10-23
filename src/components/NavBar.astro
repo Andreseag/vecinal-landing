@@ -13,16 +13,17 @@
  *   · Devuelve el foco al botón al cerrar; `inert` mientras está cerrado.
  *   · aria-expanded / aria-controls / aria-label dinámico.
  *
+ * Rendimiento: sin backdrop-blur y sin listener de scroll (ver notas).
  * Requiere en global.css: html { scroll-padding-top: 5rem; }
  * (para que las anclas no queden tapadas por la cabecera fija).
  */
 
 const links = [
-  { href: "#valor", label: "Por qué Vecinal" },
-  { href: "#modulos", label: "Módulos" },
-  { href: "#roi", label: "ROI" },
-  { href: "#precios", label: "Precios" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/#valor", label: "Por qué Vecinal" },
+  { href: "/#modulos", label: "Módulos" },
+  { href: "/#roi", label: "ROI" },
+  { href: "/#precios", label: "Precios" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
 const icons = {
@@ -31,10 +32,10 @@ const icons = {
 };
 ---
 
-<header id="site-header" data-open="false" class="group/nav fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-brand/90 backdrop-blur-md transition-colors duration-200 data-[open=true]:bg-brand">
+<header id="site-header" data-open="false" class="group/nav fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-brand/95 transition-colors duration-200 data-[open=true]:bg-brand">
   <nav class="container-x flex h-16 items-center justify-between px-6 sm:px-10 lg:px-16" aria-label="Principal">
     <!-- Logo: marca + wordmark (colores del sistema, versión sobre oscuro) -->
-    <a href="#" class="flex items-center gap-2.5 rounded-control focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-bright" aria-label="Vecinal, ir al inicio">
+    <a href="/" class="flex items-center gap-2.5 rounded-control focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-bright" aria-label="Vecinal, ir al inicio">
       <svg viewBox="0 0 62 56" class="h-8 w-auto" aria-hidden="true">
         <polygon points="4,24 20,8 36,24 36,52 4,52" class="fill-white" />
         <polygon points="26,24 42,8 58,24 58,52 26,52" class="fill-accent-bright" />
@@ -62,7 +63,7 @@ const icons = {
 
     <div class="flex items-center gap-2">
       <a
-        href="#demo"
+        href="/demo"
         class="hidden rounded-control bg-accent-bright px-4 py-2.5 text-sm font-semibold text-brand transition-colors hover:bg-mint focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-bright sm:inline-flex"
       >
         Solicitar demo
@@ -121,7 +122,7 @@ const icons = {
     </nav>
 
     <div class="m-item mt-auto pt-10" style={`--i:${links.length}`}>
-      <a href="#demo" data-mobile-link class="btn-primary-dark w-full py-4 text-lg">
+      <a href="/demo" data-mobile-link class="btn-primary-dark w-full py-4 text-lg">
         Solicitar demo
         <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons.arrowRight} />
       </a>
@@ -196,23 +197,25 @@ const icons = {
     if (e.matches && panel?.dataset.open === "true") setOpen(false, false);
   });
 
-  // Scroll-spy: marca el link de la sección visible
+  // Scroll-spy sin listener de scroll: IntersectionObserver marca el link de la sección visible
   const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]"));
   const ids = Array.from(new Set(navLinks.map((a) => a.getAttribute("href")?.slice(1)).filter(Boolean))) as string[];
+  let current: string | null = null;
 
   function setActive(id: string | null) {
+    if (id === current) return; // sin cambios → cero escrituras al DOM
+    current = id;
     navLinks.forEach((a) => {
-      const active = id !== null && a.getAttribute("href") === `#${id}`;
-      if (active) a.setAttribute("aria-current", "true");
+      if (id !== null && a.getAttribute("href") === `#${id}`) a.setAttribute("aria-current", "true");
       else a.removeAttribute("aria-current");
     });
   }
 
   const observer = new IntersectionObserver(
     (entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) setActive(e.target.id);
-      });
+      // Primero las que salen, luego las que entran (evita parpadeos entre secciones contiguas)
+      entries.filter((e) => !e.isIntersecting && e.target.id === current).forEach(() => setActive(null));
+      entries.filter((e) => e.isIntersecting).forEach((e) => setActive(e.target.id));
     },
     { rootMargin: "-40% 0px -55% 0px" }
   );
@@ -220,13 +223,4 @@ const icons = {
     const el = document.getElementById(id);
     if (el) observer.observe(el);
   });
-
-  // Arriba del todo (hero): sin sección activa
-  window.addEventListener(
-    "scroll",
-    () => {
-      if (window.scrollY < 120) setActive(null);
-    },
-    { passive: true }
-  );
 </script>

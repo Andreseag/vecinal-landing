@@ -1,0 +1,69 @@
+---
+/**
+ * WhatsAppButton — Botón flotante de contacto · Vecinal
+ * ------------------------------------------------------------
+ * Ubicación: src/components/WhatsAppButton.astro
+ * Uso (en src/pages/index.astro, una sola vez):
+ *     import WhatsAppButton from "../components/WhatsAppButton.astro";
+ *     <WhatsAppButton />
+ *   o con props:
+ *     <WhatsAppButton phone="573001234567" message="Hola, quiero información." />
+ *
+ * Comportamiento:
+ *   · Aparece solo después de bajar ~600px (no compite con el hero).
+ *   · Móvil: círculo con icono. Escritorio (sm+): píldora con texto.
+ *   · Usa IntersectionObserver (sin listener de scroll).
+ *   · z-30: queda por debajo del menú móvil (z-40) y del header (z-50).
+ *   · Respeta el área segura de iPhone y `prefers-reduced-motion`.
+ *
+ * ⚙️ Cambia el número en `phone` (con indicativo país, sin "+").
+ */
+
+interface Props {
+  phone?: string;
+  message?: string;
+}
+
+const {
+  phone = "573000000000", // ← número de ventas
+  message = "Hola, quiero información sobre Vecinal.",
+} = Astro.props;
+
+const href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+const messageCircle = '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>';
+---
+
+<!-- Centinela: cuando sale de pantalla (ya bajaste ~600px), se muestra el botón -->
+<div id="wa-sentinel" class="pointer-events-none absolute inset-x-0 top-0 h-[100px]" aria-hidden="true"></div>
+
+<a
+  id="wa-float"
+  data-visible="false"
+  data-track="whatsapp-float"
+  href={href}
+  target="_blank"
+  rel="noopener"
+  aria-label="Escribir por WhatsApp (se abre en una pestaña nueva)"
+  class="group/wa invisible fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-30 inline-flex size-14 translate-y-3 items-center justify-center gap-2.5 rounded-full bg-accent-bright text-brand opacity-0 shadow-pop transition-[opacity,transform,visibility,background-color] duration-300 hover:bg-mint focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-bright motion-reduce:transition-none data-[visible=true]:visible data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100 sm:right-6 sm:h-14 sm:w-auto sm:px-6"
+>
+  <!-- Anillo de atención: 3 pulsos al aparecer y se detiene -->
+  <span
+    class="pointer-events-none absolute inset-0 rounded-full bg-accent-bright/60 [animation-iteration-count:3] group-data-[visible=true]/wa:motion-safe:animate-ping"
+    aria-hidden="true"
+  ></span>
+
+  <svg viewBox="0 0 24 24" class="relative size-7 shrink-0 sm:size-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={messageCircle} />
+  <span class="relative hidden text-sm font-semibold sm:inline">¿Hablamos por WhatsApp?</span>
+</a>
+
+<script>
+  const btn = document.getElementById("wa-float");
+  const sentinel = document.getElementById("wa-sentinel");
+
+  if (btn && sentinel) {
+    new IntersectionObserver(([entry]) => {
+      btn.dataset.visible = String(!entry.isIntersecting);
+    }).observe(sentinel);
+  }
+</script>

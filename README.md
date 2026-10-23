@@ -21,11 +21,11 @@ Tailwind v4 define el tema en CSS. Abre **`src/styles/global.css`** y edita el b
 
 ```css
 @theme {
-  --color-brand: #0b2545;   /* azul profundo */
-  --color-accent: #1368ec;  /* azul eléctrico (CTAs) */
+  --color-brand: #0b2545; /* azul profundo */
+  --color-accent: #1368ec; /* azul eléctrico (CTAs) */
   --color-success: #16a34a; /* verde (estados positivos) */
   --color-surface: #f4f6f8; /* fondos de tarjetas */
-  --color-ink: #1a1f2b;     /* texto principal */
+  --color-ink: #1a1f2b; /* texto principal */
   /* ... */
 }
 ```
@@ -65,5 +65,5 @@ src/
 
 - Las cifras de ROI y testimonios son **placeholders** (mockup) del documento de
   estrategia; reemplázalas con datos reales antes de publicar.
-- Los enlaces de CTAs apuntan a `#` / `#demo`: conéctalos a tu calendario de demos
+- Los enlaces de CTAs apuntan a `#` / `/demo`: conéctalos a tu calendario de demos
   (Calendly, HubSpot, etc.) o formulario de registro.
